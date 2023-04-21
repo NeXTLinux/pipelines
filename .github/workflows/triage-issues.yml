@@ -23,7 +23,7 @@ concurrency:
 jobs:
   stale:
     if: >
-      startsWith(github.repository, 'Homebrew/') && (
+      startsWith(github.repository, 'pipelines/Homebrew/') && (
         github.event_name != 'issue_comment' || (
           contains(github.event.issue.labels.*.name, 'stale') ||
           contains(github.event.pull_request.labels.*.name, 'stale')
@@ -48,7 +48,7 @@ jobs:
 
   bump-pr-stale:
     if: >
-      startsWith(github.repository, 'Homebrew/') && (
+      startsWith(github.repository, 'pipelines/Homebrew/') && (
         github.event_name != 'issue_comment' || (
           contains(github.event.issue.labels.*.name, 'stale') ||
           contains(github.event.pull_request.labels.*.name, 'stale')
@@ -70,7 +70,7 @@ jobs:
           any-of-labels: "bump-formula-pr,bump-cask-pr"
 
   lock-threads:
-    if: startsWith(github.repository, 'Homebrew/') && github.event_name != 'issue_comment'
+    if: startsWith(github.repository, 'pipelines/Homebrew/') && github.event_name != 'issue_comment'
     runs-on: ubuntu-latest
     steps:
       - name: Lock Outdated Threads
