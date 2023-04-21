@@ -17,7 +17,7 @@ permissions: {}
 
 jobs:
   automerge:
-    if: startsWith(github.repository, 'Homebrew/')
+    if: startsWith(github.repository, 'NeXTLinux/')
     runs-on: ubuntu-latest
     steps:
       - name: Enable auto-merge
@@ -30,6 +30,6 @@ jobs:
           do-not-merge-labels: automerge-skip,do not merge
           required-labels: bump-cask-pr
           pull-request: ${{ github.event.inputs.pull-request }}
-          pull-request-author-associations: MEMBER,OWNER
+          pull-request-author-associations: NEXTLINUX,OWNER
           review: ${{ github.event.inputs.review }}
           review-author-associations: MEMBER,OWNER
