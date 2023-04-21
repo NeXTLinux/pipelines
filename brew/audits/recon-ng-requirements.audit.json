@@ -1,0 +1,45 @@
+[
+  {
+    "name": "redis",
+    "version": "4.4.0",
+    "vulns": [
+      {
+        "id": "GHSA-24wv-mv5m-xv4h",
+        "fix_versions": [
+          "4.3.6",
+          "4.4.3",
+          "4.5.3"
+        ],
+        "description": "redis-py before 4.5.3, as used in ChatGPT and other products, leaves a connection open after canceling an async Redis command at an inopportune time (in the case of a pipeline operation), and can send response data to the client of an unrelated request in an off-by-one manner. The fixed versions for this CVE Record are 4.3.6, 4.4.3, and 4.5.3, but [are believed to be incomplete](https://github.com/redis/redis-py/issues/2665). CVE-2023-28859 has been assigned the issues caused by the incomplete fixes."
+      },
+      {
+        "id": "GHSA-8fww-64cx-x8p5",
+        "fix_versions": [
+          "4.4.4",
+          "4.5.4"
+        ],
+        "description": "redis-py through 4.5.3 and 4.4.3 leaves a connection open after canceling an async Redis command at an inopportune time (in the case of a non-pipeline operation), and can send response data to the client of an unrelated request. NOTE: this issue exists because of an incomplete fix for CVE-2023-28858."
+      }
+    ]
+  },
+  {
+    "name": "werkzeug",
+    "version": "2.2.2",
+    "vulns": [
+      {
+        "id": "GHSA-px8h-6qxv-m22q",
+        "fix_versions": [
+          "2.2.3"
+        ],
+        "description": "Browsers may allow \"nameless\" cookies that look like `=value` instead of `key=value`. A vulnerable browser may allow a compromised application on an adjacent subdomain to exploit this to set a cookie like `=__Host-test=bad` for another subdomain.  Werkzeug <= 2.2.2 will parse the cookie `=__Host-test=bad` as `__Host-test=bad`. If a Werkzeug application is running next to a vulnerable or malicious subdomain which sets such a cookie using a vulnerable browser, the Werkzeug application will see the bad cookie value but the valid cookie key."
+      },
+      {
+        "id": "GHSA-xg9f-g7g7-2323",
+        "fix_versions": [
+          "2.2.3"
+        ],
+        "description": "Werkzeug's multipart form data parser will parse an unlimited number of parts, including file parts. Parts can be a small amount of bytes, but each requires CPU time to parse and may use more memory as Python data. If a request can be made to an endpoint that accesses `request.data`, `request.form`, `request.files`, or `request.get_data(parse_form_data=False)`, it can cause unexpectedly high resource usage.  This allows an attacker to cause a denial of service by sending crafted multipart data to an endpoint that will parse it. The amount of CPU time required can block worker processes from handling legitimate requests. The amount of RAM required can trigger an out of memory kill of the process. Unlimited file parts can use up memory and file handles. If many concurrent requests are sent continuously, this can exhaust or kill all available workers."
+      }
+    ]
+  }
+]
