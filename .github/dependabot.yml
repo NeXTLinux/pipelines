@@ -8,3 +8,8 @@ updates:
     ignore:
       - dependency-name: actions/stale
       - dependency-name: dessant/lock-threads
+      
+  - package-ecosystem: "gomod"
+    directory: "/" # Location of go.mod
+    schedule:
+      interval: "daily"
