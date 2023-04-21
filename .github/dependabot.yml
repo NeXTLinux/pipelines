@@ -10,6 +10,6 @@ updates:
       - dependency-name: dessant/lock-threads
       
   - package-ecosystem: "gomod"
-    directory: "/golang/" # Location of go.mod
+    directory: "golang/" # Location of go.mod
     schedule:
       interval: "daily"
