@@ -1,3 +1,12 @@
 [submodule "Homebrew/brew"]
 	path = Homebrew/brew
 	url = https://github.com/Homebrew/brew.git
+[submodule "Homebrew/core"]
+	path = Homebrew/core
+	url = https://github.com/Homebrew/core.git
+[submodule "Homebrew/homebrew-services"]
+	path = Homebrew/homebrew-services
+	url = https://github.com/Homebrew/homebrew-services.git
+[submodule "Homebrew/homebrew-bundle"]
+	path = Homebrew/homebrew-bundle
+	url = https://github.com/Homebrew/homebrew-bundle.git
