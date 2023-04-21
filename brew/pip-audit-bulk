@@ -1,0 +1,92 @@
+#!/usr/bin/env python
+
+# pip-audit-bulk: run pip-audit in bulk, saving (reduced) reports in JSON
+
+import json
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+IGNORED_VULNS = [
+    # These only impact wheels, which homebrew doesn't use.
+    "GHSA-39hc-v87j-747x",
+    "GHSA-x4qr-2fvf-3mr5",
+]
+
+# This entire script is path-sensitive.
+_HERE = Path(__file__).resolve().parent
+
+_REQUIREMENTS = _HERE / "requirements"
+assert _REQUIREMENTS.is_dir(), "missing requirements to audit (wrong dir?)"
+
+_OUT = _HERE / "audits"
+_OUT.mkdir(exist_ok=True)
+
+_FAILURES = _HERE / "failures"
+_FAILURES.unlink(missing_ok=True)
+
+_SKIPPED = _HERE / "skipped"
+_SKIPPED.unlink(missing_ok=True)
+
+assert shutil.which("pip-audit"), "missing pip-audit"
+
+# First pass: actually run the audits.
+for req in sorted(_REQUIREMENTS.glob("*.txt")):
+    print(f"[+] auditing: {req.name}", file=sys.stderr)
+    result = subprocess.run(
+        ["pip-audit", "--requirement", str(req), "--require-hashes", "--format=json"]
+        + [f"--ignore-vuln={v}" for v in IGNORED_VULNS],
+        capture_output=True,
+        text=True,
+    )
+
+    # If we don't see anything on stdout, pip-audit probably failed.
+    # Log it as an error.
+    if not result.stdout:
+        print(f"\t>:( pip-audit failed: {result.stderr}")
+        with _FAILURES.open(mode="at") as failures:
+            print(req.name, file=failures)
+        continue
+
+    # Reduce the audit to only dependencies that include vulnerabilities
+    audit = json.loads(result.stdout)
+    deps = audit["dependencies"]
+
+    filtered_deps = []
+    for dep in deps:
+        if "skip_reason" in dep:
+            # This implies that the dependency is either no longer present on PyPI
+            # (completely yanked/deleted) *or* that we somehow got the name wrong
+            # in the requirements file. The latter is possible in the context of Homebrew,
+            # since we infer the project name from the "resource" block name, which
+            # can be wrong or stale.
+            #
+            # This isn't a failure per se, but we want to record it anyways for manual checking.
+            print(f"\t:-? skipped {dep['name']}: {dep['skip_reason']}")
+            with _SKIPPED.open(mode="at") as skipped:
+                print(f"{dep['name']} @ {req.name}", file=skipped)
+        elif dep["vulns"]:
+            filtered_deps.append(dep)
+
+    # If we're left with anything, dump it as a result.
+    out = _OUT / req.with_suffix(".audit.json").name
+    if filtered_deps:
+        print(
+            f"\t:-( found {len(filtered_deps)} vulnerabilities in {req.name}",
+            file=sys.stderr,
+        )
+        out.write_text(json.dumps(filtered_deps, indent=2))
+    else:
+        out.unlink(missing_ok=True)
+        print(f"\t:-) no vulnerabilities found in {req.name}", file=sys.stderr)
+
+
+# Second pass: clean up any audits that don't have corresponding
+# requirement files, from a previous run of this script.
+# This is nasty, and should probably go somewhere else.
+for audit in _OUT.glob("*.json"):
+    req = _REQUIREMENTS / audit.with_suffix("").with_suffix(".txt").name
+    if not req.is_file():
+        print(f":-O {audit.name} orphaned ({req.name}), deleting")
+        audit.unlink()
