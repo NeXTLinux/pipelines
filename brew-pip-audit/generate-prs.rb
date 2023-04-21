@@ -6,7 +6,7 @@ SKIP_FORMULA = []
 PR_LIMIT = 25
 
 PR_MESSAGE = <<~MSG
-  Created by [`brew-pip-audit`](https://github.com/nextlinux/pipeline/brew/brew-pip-audit).
+  Created by [`brew-pip-audit`](https://github.com/nextlinux/pipeline/brew-pip-audit/brew-pip-audit).
 
   On errors/problems, please ping `@woodruffw` or `@alex`.
 MSG
