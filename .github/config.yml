@@ -1,0 +1,4 @@
+requestInfoUserstoExclude:
+  - cyberoslab
+  - gitworkflows
+  - gitadvisor
