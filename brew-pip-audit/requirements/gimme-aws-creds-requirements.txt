@@ -22,7 +22,7 @@ pyobjc-framework-Cocoa==9.0.1 --hash=sha256:a8b53b3426f94307a58e2f8214dc1094c19a
 pyobjc-framework-LocalAuthentication==9.0.1 --hash=sha256:f440325d33b4ce87200f876940c6d89c91a80bdbfc4926d174a5f11cd664c3dd
 pyobjc-framework-Security==9.0.1 --hash=sha256:d2093debe7467d85dd7ecef130d592abe6c13ffdbaf943d6624bae4a081046e0
 python-dateutil==2.8.2 --hash=sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86
-requests==2.28.2 --hash=sha256:98b1b2782e3c6c4904938b84c0eb932721069dfdb9134313beff7c83c2df24bf
+requests==2.31.0 --hash=sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f --hash=sha256:942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1
 s3transfer==0.6.0 --hash=sha256:2ed07d3866f523cc561bf4a00fc5535827981b117dd7876f036b0c1aca42c947
 SecretStorage==3.3.3 --hash=sha256:2403533ef369eca6d2ba81718576c5e0f564d5cca1b58f73a8b23e7d4eeebd77
 soupsieve==2.3.2.post1 --hash=sha256:fc53893b3da2c33de295667a0e19f078c14bf86544af307354de5fcf12a3f30d
